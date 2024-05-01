@@ -1,6 +1,4 @@
-streaming/project/target/
-streaming/target/
-WordCount/project/
-WordCount/target/
-WordCount2/project/
-WordCount2/target/
+*/output/
+*.bcsr
+*/target/
+*/project/
