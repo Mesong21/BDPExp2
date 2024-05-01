@@ -1,6 +1,7 @@
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
 import java.nio.file.{Files, Paths}
+import scala.collection.mutable.{Set, Stack}
 
 object SparkDFS {
   def main(args: Array[String]) {
@@ -17,25 +18,33 @@ object SparkDFS {
     // 打印图数据
     edges.foreach(println)
     // DFS算法
-    def dfs(v: Int, visited: Set[Int]): Set[Int] = {
-      if (visited.contains(v))
-        visited
-      else {
-        val neighbours: Iterable[Int] = edges.getOrElse(v, List())
-        neighbours.foldLeft(visited + v)((b, a) => dfs(a, b))
+    def dfs(v: Int): (Set[Int], List[Int]) = {
+      var visitedList = List[Int]()
+      var visited = Set[Int]()
+      val stack = Stack[Int](v)
+      while (stack.nonEmpty) {
+        val node = stack.pop()
+        if (!visited.contains(node)) {
+          visited += node
+          println("Visiting node " + node)
+          visitedList = visitedList :+ node
+          val neighbours: Iterable[Int] = edges.getOrElse(node, List())
+          neighbours.foreach(stack.push)
+        }
       }
+      (visited, visitedList)
     }
 
     // 从节点1开始进行DFS
-    val visited = dfs(1, Set())
-    println("Visited nodes: " + visited.mkString(", "))
+    val (visited, visitedList) = dfs(1)
+    println("Visited nodes: " + visitedList.mkString(", "))
     // 将结果保存到文件
     val outputPath = Paths.get("file:///home/hadoop/sparkapp/DFS/output")
     if (Files.exists(outputPath)) {
       Files.delete(outputPath)
       println("Output deleted")
     }
-    sc.parallelize(visited.toSeq).coalesce(1).saveAsTextFile("file:///home/hadoop/sparkapp/DFS/output")
+    sc.parallelize(visitedList.toSeq).coalesce(1).saveAsTextFile("file:///home/hadoop/sparkapp/DFS/output")
     println("Output saved")
   }
 }
