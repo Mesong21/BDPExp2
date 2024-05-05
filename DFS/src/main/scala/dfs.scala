@@ -40,11 +40,11 @@ object SparkDFS {
 
     // 从节点1开始进行DFS
     val (visited, visitedList) = dfs(1)
-    // println("Visited nodes: " + visitedList.mkString(", "))
+    println("Visited nodes: " + visitedList.mkString(", "))
     // 将结果保存到文件
-    val outputPath = Paths.get("file:///home/hadoop/sparkapp/DFS/output")
+    val outputPath = "file:///home/hadoop/sparkapp/DFS/output"
     
-    sc.parallelize(visitedList.toSeq).coalesce(1).saveAsTextFile("file:///home/hadoop/sparkapp/DFS/output")
+    sc.parallelize(visitedList.toSeq).coalesce(1).saveAsTextFile(outputPath)
     println("Output saved")
   }
 }
