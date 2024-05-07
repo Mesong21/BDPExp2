@@ -12,4 +12,4 @@ if [ -d "output" ]; then
 fi
 echo "Press enter to continue"
 read
-/usr/local/spark/bin/spark-submit --class "SparkDFS" /home/hadoop/sparkapp/DFS/target/scala-2.12/simple-project_2.12-1.0.jar
+/usr/local/spark/bin/spark-submit --class "GraphXDFSAndSCC" /home/hadoop/sparkapp/graphxDFS/target/scala-2.12/simple-project_2.12-1.0.jar
