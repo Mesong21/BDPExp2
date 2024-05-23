@@ -9,15 +9,15 @@ object GraphXDFSAndSCC {
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder().appName("GraphX DFS and SCC").getOrCreate()
     val sc = spark.sparkContext
-    val dfsOutputPath = "file:///home/hadoop/sparkapp/graphxDFS/output/dfs"
-    val sccOutputPath = "file:///home/hadoop/sparkapp/graphxDFS/output/scc"
-    val sortedsccOutputPath = "file:///home/hadoop/sparkapp/graphxDFS/output/sortedscc"
-    val mulsccOutputPath = "file:///home/hadoop/sparkapp/graphxDFS/output/mulscc"
+    val dfsOutputPath = "file:///share/sparkapp/graphxDFS/output/dfs"
+    val sccOutputPath = "file:///share/sparkapp/graphxDFS/output/scc"
+    val sortedsccOutputPath = "file:///share/sparkapp/graphxDFS/output/sortedscc"
+    val mulsccOutputPath = "file:///share/sparkapp/graphxDFS/output/mulscc"
 
-    val edgefile = "file:///home/hadoop/sparkapp/graphxDFS/data/graphx-wiki-edges.txt"
-    val vertexfile = "file:///home/hadoop/sparkapp/graphxDFS/data/graphx-wiki-vertices.txt"
-    val testEdgefile = "file:///home/hadoop/sparkapp/graphxDFS/data/test-edges.txt"
-    val testVertexfile = "file:///home/hadoop/sparkapp/graphxDFS/data/test-vertices.txt"
+    val edgefile = "file:///share/sparkapp/graphxDFS/data/graphx-wiki-edges.txt"
+    val vertexfile = "file:///share/sparkapp/graphxDFS/data/graphx-wiki-vertices.txt"
+    val testEdgefile = "file:///share/sparkapp/graphxDFS/data/test-edges.txt"
+    val testVertexfile = "file:///share/sparkapp/graphxDFS/data/test-vertices.txt"
     // 读取数据
     val vertexData: RDD[(VertexId, String)] = sc.textFile(vertexfile)
       .map(line => {
