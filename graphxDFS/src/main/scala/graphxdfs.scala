@@ -12,7 +12,7 @@ object GraphXDFSAndSCC {
     val dfsOutputPath = "file:///share/sparkapp/graphxDFS/output/dfs"
     val sccOutputPath = "file:///share/sparkapp/graphxDFS/output/scc"
     val sortedsccOutputPath = "file:///share/sparkapp/graphxDFS/output/sortedscc"
-    val mulsccOutputPath = "file:///share/sparkapp/graphxDFS/output/mulscc"
+    val mulsccOutputPath = "file:///share/sparkapp/graphxDFS/output/multiplescc"
 
     val edgefile = "file:///share/sparkapp/graphxDFS/data/graphx-wiki-edges.txt"
     val vertexfile = "file:///share/sparkapp/graphxDFS/data/graphx-wiki-vertices.txt"
@@ -38,14 +38,14 @@ object GraphXDFSAndSCC {
 }.subgraph(epred = triplet => triplet.srcId < triplet.dstId)
 
 
-    val sccGraph = graph.stronglyConnectedComponents(5)
-    // 将强连通分量结果按照连通分量的标识符进行分组，并对每个分组内的顶点按照顶点标识符进行排序
-    val sortedSCC = sccGraph.vertices.groupBy(_._2).mapValues(_.map(_._1).toList.sorted)
-    dfsGraph.vertices.saveAsTextFile(dfsOutputPath)
-    sccGraph.vertices.saveAsTextFile(sccOutputPath)
-    sortedSCC.saveAsTextFile(sortedsccOutputPath)
-    val multipleVerticesSCC = sortedSCC.filter(_._2.length > 1)
-    multipleVerticesSCC.saveAsTextFile(mulsccOutputPath)
+	val sccGraph = graph.stronglyConnectedComponents(5)
+	// 将强连通分量结果按照连通分量的标识符进行分组，并对每个分组内的顶点按照顶点标识符进行排序
+	val sortedSCC = sccGraph.vertices.groupBy(_._2).mapValues(_.map(_._1).toList.sorted)
+	dfsGraph.vertices.saveAsTextFile(dfsOutputPath)
+	sccGraph.vertices.saveAsTextFile(sccOutputPath)
+	sortedSCC.map{ case (id, vertices) => s"$id, ${vertices.mkString(",")}" }.saveAsTextFile(sortedsccOutputPath)
+	val multipleVerticesSCC = sortedSCC.filter(_._2.length > 1)
+	multipleVerticesSCC.map{ case (id, vertices) => s"$id ->	${vertices.mkString(",")}" }.saveAsTextFile(mulsccOutputPath)
 
     spark.stop()
   }
