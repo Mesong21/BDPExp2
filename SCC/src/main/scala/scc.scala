@@ -10,9 +10,11 @@ object SparkSCC {
   def main(args: Array[String]) {
     val conf = new SparkConf().setAppName("SCC")
     val sc = new SparkContext(conf)
-
+		var edgePath = "file:///share/sparkapp/SCC/edges.txt"
+		var dfsOutputPath = "file:///share/sparkapp/SCC/output/dfs"
+		var sccOutputPath = "file:///share/sparkapp/SCC/output/scc"
     // 读取图数据
-    val edges = sc.textFile("file:///home/hadoop/sparkapp/SCC/edges.txt")
+    val edges = sc.textFile(edgePath)
       .map(line => line.split(","))
       .map(parts => (parts(0).toInt, parts(1).toInt))
       .groupByKey()
@@ -34,7 +36,7 @@ object SparkSCC {
           neighbours.foreach(stack.push)
         }
       }
-      // println("visitedList: " + visitedList)
+      println("visitedList: " + visitedList)
       (visited, visitedList)
     }
     
@@ -73,8 +75,7 @@ object SparkSCC {
       val (visitedComponent, _) = dfs(firstNode, mutableTransposedEdges)
       visited = visitedComponent
       println("Found SCC: " + visitedComponent.mkString(", "))
-      val outputPath = "file:///home/hadoop/sparkapp/SCC/output"
-      sc.parallelize(visitedComponent.toSeq).coalesce(1).saveAsTextFile(outputPath)
+      sc.parallelize(visitedComponent.toSeq).coalesce(1).saveAsTextFile(sccOutputPath)
       println("Output saved")
     }
   }

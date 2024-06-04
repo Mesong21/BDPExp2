@@ -12,7 +12,7 @@ object SparkDFS {
     val sc = new SparkContext(conf)
 
     // 读取图数据
-    val edges = sc.textFile("file:///home/hadoop/sparkapp/DFS/edges.txt")
+    val edges = sc.textFile("file:///share/sparkapp/DFS/edges.txt")
       .map(line => line.split(","))
       .map(parts => (parts(0).toInt, parts(1).toInt))
       .groupByKey()
@@ -42,7 +42,7 @@ object SparkDFS {
     val (visited, visitedList) = dfs(1)
     println("Visited nodes: " + visitedList.mkString(", "))
     // 将结果保存到文件
-    val outputPath = "file:///home/hadoop/sparkapp/DFS/output"
+    val outputPath = "file:///share/sparkapp/DFS/output"
     
     sc.parallelize(visitedList.toSeq).coalesce(1).saveAsTextFile(outputPath)
     println("Output saved")

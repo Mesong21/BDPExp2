@@ -19,13 +19,13 @@ object GraphXDFSAndSCC {
     val testEdgefile = "file:///share/sparkapp/graphxDFS/data/test-edges.txt"
     val testVertexfile = "file:///share/sparkapp/graphxDFS/data/test-vertices.txt"
     // 读取数据
-    val vertexData: RDD[(VertexId, String)] = sc.textFile(vertexfile)
+    val vertexData: RDD[(VertexId, String)] = sc.textFile(testVertexfile)
       .map(line => {
         val fields = line.split("\t")
         (fields(0).toLong, fields(1))
       })
 
-    val edgeData: RDD[Edge[Boolean]] = sc.textFile(edgefile)
+    val edgeData: RDD[Edge[Boolean]] = sc.textFile(testEdgefile)
       .map(line => {
         val fields = line.split("\t")
         Edge(fields(0).toLong, fields(1).toLong, true)
