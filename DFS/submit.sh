@@ -12,4 +12,4 @@ if [ -d "output" ]; then
 fi
 echo "Press enter to continue"
 read
-/usr/local/spark/bin/spark-submit --class "SparkDFS" ./target/scala-2.12/simple-project_2.12-1.0.jar | grep visitedList
+/usr/local/spark/bin/spark-submit --class "SparkDFS" ./target/scala-2.12/simple-project_2.12-1.0.jar 

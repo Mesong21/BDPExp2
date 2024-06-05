@@ -5,7 +5,7 @@ if [ -z "$answer" ] || [ "$answer" == "${answer#[Yy]}" ] ;then
 else
     sudo /usr/local/sbt/sbt package
 fi
-# 如果output目录存在,那么删除它并打印删除的信息
+# 删除output目录
 if [ -d "output" ]; then
     echo "output directory exists, deleting it"
     sudo rm -r output

@@ -39,8 +39,8 @@ object SparkDFS {
     }
 
     // 从节点1开始进行DFS
-    val (visited, visitedList) = dfs(1)
-    println("Visited nodes: " + visitedList.mkString(", "))
+    val (visited, visitedList) = dfs(2)
+    println("\n\n Visited nodes: " + visitedList.mkString(", "))
     // 将结果保存到文件
     val outputPath = "file:///share/sparkapp/DFS/output"
     
